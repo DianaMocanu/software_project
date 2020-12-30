@@ -3,6 +3,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
 from EntropyMethods import *
+from Node import Node
 
 class DecisionTreeAlgorithm():
     def __init__(self, features, data, max_depth):
@@ -41,20 +42,17 @@ class DecisionTreeAlgorithm():
         elif len(labels) == 0:
             return None
         elif all(x == labels[0] for x in labels):
-            return {'val': labels[0]}
+            return Node(labels[0], depth, True)
         elif depth >= self.max_depth:
             return None
         else:
             column, cutoff, entropy = self.find_best_split_overall(data, labels)
             label_left = labels[data[:, column] < cutoff]
             label_right = labels[data[:, column] >= cutoff]
-            node = {'column_name': self.features[column],
-                    'index_column': column,
-                    'cutoff': cutoff,
-                    'entropy': entropy,
-                    'class_value': np.round(np.mean(labels))}
-            node['left'] = self.fit(data[data[:, column] < cutoff], label_left, {}, depth+1)
-            node['right'] = self.fit(data[data[:, column] >= cutoff], label_right, {}, depth+1)
+            node = Node(np.round(np.mean(labels)), depth)
+            node.initialize(self.features[column], column, cutoff, entropy)
+            node.addLeftChild(self.fit(data[data[:, column] < cutoff], label_left, {}, depth+1))
+            node.addRightChild(self.fit(data[data[:, column] >= cutoff], label_right, {}, depth+1))
             self.tree_depth += 1
             self.trees = node
             return node
@@ -74,13 +72,20 @@ class DecisionTreeAlgorithm():
 
     def _get_prediction(self, row):
         cur_layer = self.trees
-        while cur_layer.get('cutoff'):
-            if row[cur_layer['index_column']] < cur_layer['cutoff']:
-                cur_layer = cur_layer['left']
+        while cur_layer.cutoff:
+            if row[cur_layer.index] < cur_layer.cutoff:
+                cur_layer = cur_layer.left
             else:
-                cur_layer = cur_layer['right']
+                cur_layer = cur_layer.right
         else:
-            return cur_layer.get('val')
+            return cur_layer.class_value
+        # while cur_layer.get('cutoff'):
+        #     if row[cur_layer['index_column']] < cur_layer['cutoff']:
+        #         cur_layer = cur_layer['left']
+        #     else:
+        #         cur_layer = cur_layer['right']
+        # else:
+        #     return cur_layer.get('val')
 
 
 iris = load_iris()
@@ -90,6 +95,6 @@ x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=12
 features = ['petal_l', 'petal_w', 'sepal_l', 'sepal_w']
 clf = DecisionTreeAlgorithm(features, x, max_depth=7)
 m = clf.fit(x_train, y_train)
-pprint(m)
+print(str(m))
 res = clf.predict(x_test)
 print(clf.accuracy_metric(y_test, res))
