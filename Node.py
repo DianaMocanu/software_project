@@ -23,7 +23,7 @@ class Node():
         nl = '\n'
         space = ' ' * (self.depth**2)
         if self.isLeaf:
-            return f'{space}Class: {str(self.class_value)} class: {self.class_value} isLeaf: {self.isLeaf}'
+            return f'{space}Class: {str(self.class_value)} isLeaf: {self.isLeaf}'
         else:
             return f'{space}{self.column_name} <= {str(self.cutoff)} entropy: {self.entropy} class: {self.class_value}' \
                    f'{nl}{str(self.left)} '\

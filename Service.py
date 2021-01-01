@@ -32,10 +32,13 @@ def generateQuery():
         if not isValidated:
             return message, 209
         start_time = time.time()
-        result, positive_ids= service.getQueryAlternativeConditions(query, database, negation, rate)
-        dataToSend = {'results': result, 'pos_ids': positive_ids}
-        print("--- %s seconds ---" % (time.time() - start_time))
-        response = jsonify(dataToSend)
+        service.getQueryAlternativeConditions(query, database, negation, rate)
+        # result, positive_ids= service.getQueryAlternativeConditions(query, database, negation, rate)
+        # dataToSend = {'results': result, 'pos_ids': positive_ids}
+        # print("--- %s seconds ---" % (time.time() - start_time))
+        #
+        response = 'Data'
+        response = jsonify(response)
         return response
     except Error as n:
         return n.msg, 209

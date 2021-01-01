@@ -21,6 +21,7 @@ class Controller:
         clf = DecisionTreeAlgorithm(feature_names, X, 5)
         tree = clf.fit(X, tags)
         self.learning.parseTree(tree)
+        print('cond', self.learning.conditions)
         # learningService = LearningController(X, tags, feature_names, target_names, np.array(result))
         # results = learningService.generateConditionsQuery()
         # return(results, pos_ids)

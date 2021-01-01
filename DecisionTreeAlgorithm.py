@@ -1,4 +1,3 @@
-from pprint import pprint
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
@@ -79,13 +78,6 @@ class DecisionTreeAlgorithm():
                 cur_layer = cur_layer.right
         else:
             return cur_layer.class_value
-        # while cur_layer.get('cutoff'):
-        #     if row[cur_layer['index_column']] < cur_layer['cutoff']:
-        #         cur_layer = cur_layer['left']
-        #     else:
-        #         cur_layer = cur_layer['right']
-        # else:
-        #     return cur_layer.get('val')
 
 
 iris = load_iris()
