@@ -1,7 +1,7 @@
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from EntropyMethods import *
-from Node import Node
+from src.EntropyMethods import *
+from src.Node import Node
 
 class DecisionTreeAlgorithm():
     def __init__(self, features, max_depth):

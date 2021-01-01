@@ -1,4 +1,4 @@
-from DecisionTreeAlgorithm import DecisionTreeAlgorithm
+from src.DecisionTreeAlgorithm import DecisionTreeAlgorithm
 
 
 class LearningController():
