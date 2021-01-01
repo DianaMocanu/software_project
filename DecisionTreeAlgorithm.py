@@ -1,13 +1,11 @@
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-
 from EntropyMethods import *
 from Node import Node
 
 class DecisionTreeAlgorithm():
-    def __init__(self, features, data, max_depth):
+    def __init__(self, features, max_depth):
         self.features = features
-        self.data = data
         self.max_depth = max_depth
         self.tree_depth = 0
 
@@ -85,7 +83,7 @@ x = iris.data
 y = iris.target
 x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=123)
 features = ['petal_l', 'petal_w', 'sepal_l', 'sepal_w']
-clf = DecisionTreeAlgorithm(features, x, max_depth=7)
+clf = DecisionTreeAlgorithm(features, max_depth=7)
 m = clf.fit(x_train, y_train)
 print(str(m))
 res = clf.predict(x_test)

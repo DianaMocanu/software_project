@@ -32,37 +32,34 @@ def generateQuery():
         if not isValidated:
             return message, 209
         start_time = time.time()
-        service.getQueryAlternativeConditions(query, database, negation, rate)
-        # result, positive_ids= service.getQueryAlternativeConditions(query, database, negation, rate)
-        # dataToSend = {'results': result, 'pos_ids': positive_ids}
-        # print("--- %s seconds ---" % (time.time() - start_time))
-        #
-        response = 'Data'
-        response = jsonify(response)
-        return response
-    except Error as n:
-        return n.msg, 209
-
-
-@app.route('/execute', methods=['POST'])
-@cross_origin()
-def executeQuery():
-    request_json = request.get_json()
-    Data = request_json['Data']
-    database = Data['database']
-    query = Data['query']
-    try:
-        isValidated, message = validator.checkExecuteQuery(query)
-        if not isValidated:
-            return message, 209
-        result, columns = service.executeQuery(query, database)
-        print("Result size" + str(len(result)))
-        dataToSend = {'results': result, 'columns': columns}
+        result, positive_ids= service.getQueryAlternativeConditions(query, database, negation, rate)
+        print("--- %s seconds ---" % (time.time() - start_time))
+        dataToSend = {'results': result, 'pos_ids': positive_ids}
         response = jsonify(dataToSend)
         return response
     except Error as n:
         return n.msg, 209
 
+
+# @app.route('/execute', methods=['POST'])
+# @cross_origin()
+# def executeQuery():
+#     request_json = request.get_json()
+#     Data = request_json['Data']
+#     database = Data['database']
+#     query = Data['query']
+#     try:
+#         isValidated, message = validator.checkExecuteQuery(query)
+#         if not isValidated:
+#             return message, 209
+#         result, columns = service.executeQuery(query, database)
+#         print("Result size" + str(len(result)))
+#         dataToSend = {'results': result, 'columns': columns}
+#         response = jsonify(dataToSend)
+#         return response
+#     except Error as n:
+#         return n.msg, 209
+#
 @app.route('/executeId', methods=['POST'])
 @cross_origin()
 def executeQueryId():
@@ -78,48 +75,48 @@ def executeQueryId():
     except Error as n:
         return n.msg, 209
 
-@app.route('/tables', methods=['GET', 'POST'])
-@cross_origin()
-def getTables():
-    request_json = request.get_json()
-    Data = request_json['Data']
-    database = Data['database']
-    try:
-        result = service.getTablesDatabase(database)
-        response = jsonify(result)
-        return response
-    except Error as n:
-        return n.msg, 209
-
-
-@app.route('/columns', methods=['GET', 'POST'])
-@cross_origin()
-def getColumns():
-    request_json = request.get_json()
-    Data = request_json['Data']
-    table = Data['table']
-    database = Data['database']
-    try:
-        result = service.getColumns(database, table)
-        response = jsonify(result)
-        return response
-    except Error as n:
-        return n.msg, 209
-
-@app.route('/maxMin', methods=['GET', 'POST'])
-@cross_origin()
-def getMinMax():
-    request_json = request.get_json()
-    Data = request_json['Data']
-    table = Data['table']
-    database = Data['database']
-    column = Data['column']
-    try:
-        result = service.getMinMaxColumn(database, table, column)
-        response = jsonify(result)
-        return response
-    except Error as n:
-        return n.msg, 209
+# @app.route('/tables', methods=['GET', 'POST'])
+# @cross_origin()
+# def getTables():
+#     request_json = request.get_json()
+#     Data = request_json['Data']
+#     database = Data['database']
+#     try:
+#         result = service.getTablesDatabase(database)
+#         response = jsonify(result)
+#         return response
+#     except Error as n:
+#         return n.msg, 209
+#
+#
+# @app.route('/columns', methods=['GET', 'POST'])
+# @cross_origin()
+# def getColumns():
+#     request_json = request.get_json()
+#     Data = request_json['Data']
+#     table = Data['table']
+#     database = Data['database']
+#     try:
+#         result = service.getColumns(database, table)
+#         response = jsonify(result)
+#         return response
+#     except Error as n:
+#         return n.msg, 209
+#
+# @app.route('/maxMin', methods=['GET', 'POST'])
+# @cross_origin()
+# def getMinMax():
+#     request_json = request.get_json()
+#     Data = request_json['Data']
+#     table = Data['table']
+#     database = Data['database']
+#     column = Data['column']
+#     try:
+#         result = service.getMinMaxColumn(database, table, column)
+#         response = jsonify(result)
+#         return response
+#     except Error as n:
+#         return n.msg, 209
 
 
 if __name__ == '__main__':

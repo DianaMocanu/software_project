@@ -22,13 +22,13 @@ class DataController:
 
     def createLearningSets(self, query, negation, randomRate):
         self.tags = []
-        self.idCsv = 1
-        newQuery =query.constructQueryWithoutId()
+        newQuery = query.constructQueryWithoutId()
         positive_result = np.array(newQuery.executeQuery())
         positive_length = len(positive_result)
         self.field_names = newQuery.field_names
         if negation == 1:
-            negative_result = newQuery.negateQueryRandom(positive_length, randomRate, self.getSizeDatabase(query.database))
+            negative_result = newQuery.negateQueryRandom(positive_length, randomRate,
+                                                         self.getSizeDatabase(query.database))
         else:
             negative_result = newQuery.negateQueryCombinationsN(positive_length)
 
@@ -37,10 +37,6 @@ class DataController:
         print("Negate size: " + str(negative_length) + " Positive size: " + str(positive_length))
         self.addToTag(positive_length, 0)
         self.addToTag(negative_length, 1)
-        a = self.addTagToArray(positive_result, 0)
-        b= self.addTagToArray(negative_result, 1)
-        c = np.concatenate((a, b), axis= 0)
-        self.dataForCsv = c
         return np.concatenate((np.array(positive_result), np.array(negative_result))), positive_result, positive_ids
 
 
@@ -49,24 +45,24 @@ class DataController:
         self.tags += tagsToAdd
 
 
-    def addTagToArray(self, elems, tag):
-        newArray = []
-        for elem in np.array(elems):
-            elem = np.concatenate(([int(self.idCsv)], np.append(elem, tag)), axis=0)
-            self.idCsv+=1
-            newArray.append(elem)
+    # def addTagToArray(self, elems, tag):
+    #     newArray = []
+    #     for elem in np.array(elems):
+    #         elem = np.concatenate(([int(self.idCsv)], np.append(elem, tag)), axis=0)
+    #         self.idCsv+=1
+    #         newArray.append(elem)
+    #
+    #     return np.array(newArray)
 
-        return np.array(newArray)
 
-
-    def getNextNegated(self, query, database):
-        lower_query = query.lower()
-        idx = lower_query.index("where")
-        wherePart = query[idx + 5:].split("and")
-        newCond = wherePart[0] + " and not("
-        for x in range(1, len(wherePart)):
-            newCond += wherePart[x]
-        negate_command = query[:idx + 5] + newCond + ")"
-        newQuery = Query(database, negate_command)
-        res = newQuery.executeQuery()
-        return res
+    # def getNextNegated(self, query, database):
+    #     lower_query = query.lower()
+    #     idx = lower_query.index("where")
+    #     wherePart = query[idx + 5:].split("and")
+    #     newCond = wherePart[0] + " and not("
+    #     for x in range(1, len(wherePart)):
+    #         newCond += wherePart[x]
+    #     negate_command = query[:idx + 5] + newCond + ")"
+    #     newQuery = Query(database, negate_command)
+    #     res = newQuery.executeQuery()
+    #     return res

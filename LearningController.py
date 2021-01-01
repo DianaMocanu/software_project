@@ -1,9 +1,17 @@
+from DecisionTreeAlgorithm import DecisionTreeAlgorithm
+
 
 class LearningController():
 
-
     def __init__(self):
         self.conditions = []
+
+    def constructTree(self, feature_names, max_depth, data, tags):
+        self.conditions = []
+        clf = DecisionTreeAlgorithm(feature_names, max_depth)
+        tree = clf.fit(data, tags)
+        self.parseTree(tree)
+        return self.conditions
 
     def parseTree(self, tree, condition=''):
 
