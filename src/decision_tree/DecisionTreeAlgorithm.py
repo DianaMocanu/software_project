@@ -1,5 +1,5 @@
-from src.EntropyMethods import *
-from src.Node import Node
+from src.decision_tree.EntropyMethods import *
+from src.decision_tree.Node import Node
 
 class DecisionTreeAlgorithm():
     def __init__(self, features, max_depth):

@@ -1,7 +1,7 @@
 from src.database.DataController import DataController
 from src.database.Query import Query
-from src.LearningController import LearningController
-from src.DecisionTreeAlgorithm import *
+from src.decision_tree.LearningController import LearningController
+import numpy as np
 
 class Controller:
     def __init__(self):
