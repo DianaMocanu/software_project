@@ -14,6 +14,12 @@ class LearningController():
         return self.conditions
 
     def parseTree(self, tree, condition=''):
+        '''
+        Parse a tree constructing along the way the alternative condition and keeping only the conditions that reach a leaf node with a class value of 0
+        :param tree: the tree witch will be of class Node
+        :param condition: the condition that is constructed until that point
+        :return:
+        '''
 
         if tree.cutoff:
             self.parseTree(tree.left, f'{condition} and {tree.column_name} <= {tree.cutoff}')

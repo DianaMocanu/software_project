@@ -1,5 +1,3 @@
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
 from src.EntropyMethods import *
 from src.Node import Node
 
@@ -9,7 +7,14 @@ class DecisionTreeAlgorithm():
         self.max_depth = max_depth
         self.tree_depth = 0
 
+
     def find_best_split(self, column, labels):
+        '''
+        Calculate the best split value for a specific column
+        :param column: will contain all the data's for a specific column
+        :param labels: will be a list of the tag for all tuples
+        :return: the min_entropy found and the specific cutoff value
+        '''
         min_entropy = 20
         for value in set(column):
             predict = column < value
@@ -20,6 +25,12 @@ class DecisionTreeAlgorithm():
         return min_entropy, cutoff
 
     def find_best_split_overall(self, data, labels):
+        '''
+        Taking into account all the columns from data calculate the best column and cutoff value for splitting the data
+        :param data: the table of data
+        :param labels: an array of the label of every column
+        :return: the column index, the cutoff and the entropy
+        '''
         column = None
         min_entropy = 1
         cutoff = None
@@ -34,6 +45,15 @@ class DecisionTreeAlgorithm():
         return  column, cutoff, min_entropy
 
     def fit(self, data, labels, par_node= {}, depth = 0):
+        '''
+        While we still have a prent node or we have not exceeded the max depth or we have reached a point where all the remaining data is from a specific
+        class we construct the tree
+        :param data: the data that is used for creating the tree
+        :param labels: the array of all the labels for each column
+        :param par_node: the parentNode at witch we are
+        :param depth: the current depth of the tree
+        :return: the tree
+        '''
         if par_node is None:
             return None
         elif len(labels) == 0:
@@ -55,6 +75,12 @@ class DecisionTreeAlgorithm():
             return node
 
     def accuracy_metric(self, actual, predicted):
+        '''
+        calculate the program accuracy
+        :param actual: actual classes
+        :param predicted: the predicted classes
+        :return:
+        '''
         correct = 0
         for i in range(len(actual)):
             if actual[i] == predicted[i]:
@@ -62,12 +88,12 @@ class DecisionTreeAlgorithm():
         return correct / float(len(actual)) * 100.0
 
     def predict(self, data):
-        results = np.array([0] * len(x))
+        results = np.array([0] * len(data))
         for i, c in enumerate(data):
-            results[i] = self._get_prediction(c)
+            results[i] = self.get_prediction(c)
         return results
 
-    def _get_prediction(self, row):
+    def get_prediction(self, row):
         cur_layer = self.trees
         while cur_layer.cutoff:
             if row[cur_layer.index] < cur_layer.cutoff:
@@ -78,13 +104,13 @@ class DecisionTreeAlgorithm():
             return cur_layer.class_value
 
 
-iris = load_iris()
-x = iris.data
-y = iris.target
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=123)
-features = ['petal_l', 'petal_w', 'sepal_l', 'sepal_w']
-clf = DecisionTreeAlgorithm(features, max_depth=7)
-m = clf.fit(x_train, y_train)
-print(str(m))
-res = clf.predict(x_test)
-print(clf.accuracy_metric(y_test, res))
+# iris = load_iris()
+# x = iris.data
+# y = iris.target
+# x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=123)
+# features = ['petal_l', 'petal_w', 'sepal_l', 'sepal_w']
+# clf = DecisionTreeAlgorithm(features, max_depth=7)
+# m = clf.fit(x_train, y_train)
+# print(str(m))
+# res = clf.predict(x_test)
+# print(clf.accuracy_metric(y_test, res))

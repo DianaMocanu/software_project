@@ -95,11 +95,6 @@ class Query:
         return resultedTuples
 
 
-    def constructCondition(self, conditions):
-        finalCond = " and ".join(conditions)
-        return finalCond
-
-
     def deconstructQuery(self):
         lowerQuery  = self.query.lower()
         idx = lowerQuery .index("where")

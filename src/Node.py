@@ -1,6 +1,10 @@
 class Node():
 
     def __init__(self, value, depth, isLeaf=False):
+        '''
+        value -> represents the specific class value
+        depth ->
+        '''
         self.isLeaf = isLeaf
         self.class_value = value
         self.cutoff = None
@@ -8,12 +12,25 @@ class Node():
 
 
     def initialize(self, column_name, index, cutoff, entropy):
+        '''
+
+        :param column_name:
+        :param index: the index of the column
+        :param cutoff: the value used for splitting at that node
+        :param entropy:
+        :return:
+        '''
         self.column_name = column_name
         self.index = index
         self.cutoff = cutoff
         self.entropy = entropy
 
     def addLeftChild(self, left):
+        '''
+        Adds a left child to a Node
+        :param left: a entity of class Node
+        :return: void
+        '''
         self.left = left
 
     def addRightChild(self, right):
